@@ -1,0 +1,15 @@
+{% extends "::base.html.twig" %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% block title %}
+    Rejestracja
+{% endblock %}
+{% block body %}
+    <div>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+    <div>
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}

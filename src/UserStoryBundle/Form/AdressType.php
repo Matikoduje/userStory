@@ -3,34 +3,35 @@
  * Created by PhpStorm.
  * User: mat
  * Date: 13.05.17
- * Time: 12:28
+ * Time: 14:10
  */
 
 namespace UserStoryBundle\Form;
 
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class AdressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
-                'label' => 'Podaj imię:',
-                'required' => true
+            ->add('city', TextType::class, array(
+                'label' => 'Miasto:'
             ))
-            ->add('surname', TextType::class, array(
-                'label' => 'Podaj nazwisko:',
-                'required' => true
+            ->add('street', TextType::class, array(
+                'label' => 'Ulica:'
             ))
-            ->add('description', TextareaType::class, array(
-                'label' => 'Opis:'
+            ->add('houseNumber', NumberType::class, array(
+                'label' => 'Numer Domu:'
+            ))
+            ->add('flatNumber', NumberType::class, array(
+                'label' => 'Numer Mieszkania:'
             ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Zapisz'
@@ -39,13 +40,13 @@ class UserType extends AbstractType
 
     public function getName()
     {
-        return 'user';
+        return 'adress';
     }
 
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UserStoryBundle\Entity\User'
+            'data_class' => 'UserStoryBundle\Entity\Adress'
         ));
     }
 }

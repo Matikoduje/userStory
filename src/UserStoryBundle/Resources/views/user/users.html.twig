@@ -1,0 +1,20 @@
+{% extends "::base.html.twig" %}
+{% block title %}
+    Rejestracja
+{% endblock %}
+{% block body %}
+    {% for user in users %}
+        <p>
+            Id: {{ user.id }}
+        </p>
+        <p>
+            Imię: {{ user.name }}
+        </p>
+        <p>
+            Nazwisko: {{ user.surname }}
+        </p>
+        <p>
+            Opis: {{ user.description }}
+        </p>
+    {% endfor %}
+{% endblock %}

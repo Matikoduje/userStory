@@ -42,6 +42,10 @@ class User
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Adress", mappedBy="user")
+     */
+    private $adresses;
 
     /**
      * Get id
@@ -124,5 +128,45 @@ class User
     {
         return $this->description;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->adresses = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add adress
+     *
+     * @param \UserStoryBundle\Entity\Adress $adress
+     *
+     * @return User
+     */
+    public function addAdress(\UserStoryBundle\Entity\Adress $adress)
+    {
+        $this->adresses[] = $adress;
+
+        return $this;
+    }
+
+    /**
+     * Remove adress
+     *
+     * @param \UserStoryBundle\Entity\Adress $adress
+     */
+    public function removeAdress(\UserStoryBundle\Entity\Adress $adress)
+    {
+        $this->adresses->removeElement($adress);
+    }
+
+    /**
+     * Get adresses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAdresses()
+    {
+        return $this->adresses;
+    }
+}
