@@ -3,12 +3,12 @@
     Rejestracja
 {% endblock %}
 {% block body %}
-    <p><a href="{{ path('userForm') }}">Dodaj osobę</a> </p>
+    <a class="btn btn-primary" href="{{ path('userForm') }}">Dodaj nową osobę: </a></p>
     {% for user in users %}
-        <p><a href="{{ path('showUser', {'id': user.id}) }}">{{ user.surname }} {{ user.name }}</a>
+        <p><a href="{{ path('showUser', {'id': user.id}) }}"><span style="font-size: medium">{{ user.surname }} {{ user.name }}</span></a>
         <br>
-        <a href={{ path('userEditForm', {'id': user.id}) }}>Edytuj</a>
-        <a href={{ path('deleteUser', {'id': user.id}) }}>Usuń</a>
+        <a class="btn-sm btn-primary" href={{ path('userEditForm', {'id': user.id}) }}>Edytuj</a>
+        <a class="btn-sm btn-warning" href={{ path('deleteUser', {'id': user.id}) }}>Usuń</a>
         </p>
     {% endfor %}
 {% endblock %}

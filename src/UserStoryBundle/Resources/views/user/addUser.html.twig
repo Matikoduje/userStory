@@ -1,58 +1,112 @@
 {% extends "::base.html.twig" %}
-{% form_theme formUser 'bootstrap_3_horizontal_layout.html.twig' %}
-{% form_theme formAdress 'bootstrap_3_horizontal_layout.html.twig' %}
-{% form_theme formEmail 'bootstrap_3_horizontal_layout.html.twig' %}
-{% form_theme formPhone 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme formUser 'bootstrap_3_layout.html.twig' %}
 {% block title %}
     Rejestracja
 {% endblock %}
 {% block body %}
-    <div>
-        {{ form_start(formUser) }}
-        {{ form_widget(formUser) }}
-        {{ form_end(formUser) }}
-    </div>
-    <div>
-        {{ form_errors(formUser) }}
-    </div>
-    <br><br>
-    <div id="adressForm" style="display: none">
-        {%  if formAdress is defined %}
-        {{ form_start(formAdress) }}
-        {{ form_widget(formAdress) }}
-        {{ form_end(formAdress) }}
-        {{ form_errors(formAdress) }}
+    <div class="row">
+        <div class="col-lg-3">
+            {% if user is defined %}
+                <h3>Edycja użytkownika:</h3>
+            {% else %}
+                <h3>Dodaj użytkownika:</h3>
+            {% endif %}
+            <div>
+                {{ form_start(formUser) }}
+                {{ form_widget(formUser) }}
+                {{ form_end(formUser) }}
+            </div>
+            <div>
+                {{ form_errors(formUser) }}
+            </div>
+            <div>
+                <a class="btn-sm btn-info" href={{ path('showAllUsers') }}>Powrót</a>
+            </div>
+        </div>
+        {% if user is defined %}
+        <div class="col-lg-3">
+            <h3>Edycja adresów:</h3>
+            <div id="adressForm" style="display: none">
+                {%  if formAdress is defined %}
+                    {% form_theme formAdress 'bootstrap_3_layout.html.twig' %}
+                    {{ form_start(formAdress) }}
+                    {{ form_widget(formAdress) }}
+                    {{ form_end(formAdress) }}
+                    {{ form_errors(formAdress) }}
+                {% endif %}
+            </div>
+            <div>
+                <button class="btn-sm btn-info" id="btnAdress" type="button">Dodaj adres</button>
+            </div>
+            <div>
+                {% if user.adresses is not empty %}
+                    <h5>Adresy:</h5>
+                    {% for address in user.adresses %}
+                        <p>Ulica: {{ address.street }}</p>
+                        <p>Numer domu: {{ address.houseNumber }}</p>
+                        <p>Miasto: {{ address.city }}</p>
+                        <a class="btn-sm btn-primary" href={{ path('editAdress', {'id': address.id}) }}>Edytuj</a>
+                        <a class="btn-sm btn-warning" href={{ path('deleteAdress', {'idUser' : user.id, 'idAdress' : address.id}) }}>Usuń</a>
+                        <br><br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <h3>Edycja e-maili</h3>
+            <div id="emailForm" style="display: none">
+                {%  if formEmail is defined %}
+                    {% form_theme formEmail 'bootstrap_3_layout.html.twig' %}
+                    {{ form_start(formEmail) }}
+                    {{ form_widget(formEmail) }}
+                    {{ form_end(formEmail) }}
+                    {{ form_errors(formEmail) }}
+                {% endif %}
+            </div>
+            <div>
+                <button class="btn-sm btn-info" id="btnEmail" type="button">Dodaj email</button>
+            </div>
+            <div>
+                {% if user.emails is not empty %}
+                    <h5>Emaile:</h5>
+                    {% for email in user.emails %}
+                        <p>Email: {{ email.address }}</p>
+                        <p>Rodzaj: {{ email.type }}</p>
+                        <a class="btn-sm btn-primary" href={{ path('editEmail', {'id': email.id}) }}>Edytuj</a>
+                        <a class="btn-sm btn-warning" href={{ path('deleteEmail', {'idUser' : user.id, 'idEmail' : email.id}) }}>Usuń</a>
+                        <br><br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <h3>Edycja telefonów</h3>
+            <div id="phoneForm" style="display: none">
+                {%  if formPhone is defined %}
+                    {% form_theme formPhone 'bootstrap_3_layout.html.twig' %}
+                    {{ form_start(formPhone) }}
+                    {{ form_widget(formPhone) }}
+                    {{ form_end(formPhone) }}
+                    {{ form_errors(formPhone) }}
+                {% endif %}
+            </div>
+            <div>
+                <button class="btn-sm btn-info" id="btnPhone" type="button">Dodaj numer telefonu</button>
+            </div>
+            <div>
+                {% if user.phones is not empty %}
+                    <h5>Telefony:</h5>
+                    {% for phone in user.phones %}
+                        <p>Numer: {{ phone.number }}</p>
+                        <p>Rodzaj: {{ phone.type }}</p>
+                        <a class="btn-sm btn-primary" href={{ path('editPhone', {'id': phone.id}) }}>Edytuj</a>
+                        <a class="btn-sm btn-warning" href={{ path('deletePhone', {'idUser' : user.id, 'idPhone' : phone.id}) }} >Usuń</a>
+                        <br><br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
         {% endif %}
-    </div>
-    <br>
-    <div>
-        <button id="btnAdress" type="button">Dodaj adres</button>
-    </div>
-    <br><br>
-    <div id="emailForm" style="display: none">
-        {%  if formEmail is defined %}
-            {{ form_start(formEmail) }}
-            {{ form_widget(formEmail) }}
-            {{ form_end(formEmail) }}
-            {{ form_errors(formEmail) }}
-        {% endif %}
-    </div>
-    <br>
-    <div>
-        <button id="btnEmail" type="button">Dodaj email</button>
-    </div>
-    <br><br>
-    <div id="phoneForm" style="display: none">
-        {%  if formPhone is defined %}
-            {{ form_start(formPhone) }}
-            {{ form_widget(formPhone) }}
-            {{ form_end(formPhone) }}
-            {{ form_errors(formPhone) }}
-        {% endif %}
-    </div>
-    <br>
-    <div>
-        <button id="btnPhone" type="button">Dodaj numer telefonu</button>
     </div>
 {% endblock %}
 {% block javascripts %}

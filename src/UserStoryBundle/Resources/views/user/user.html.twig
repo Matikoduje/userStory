@@ -3,44 +3,48 @@
     Rejestracja
 {% endblock %}
 {% block body %}
-        <h3>Dane użytkownika:</h3>
-        <p>
-            Imię: {{ user.name }}
-        </p>
-        <p>
-            Nazwisko: {{ user.surname }}
-        </p>
-        <p>
-            Opis: {{ user.description }}
-        </p>
-        {% if user.adresses is not empty %}
-            <h3>Adresy:</h3>
-            {% for address in user.adresses %}
-                <hr>
-                <p>Ulica: {{ address.street }}</p>
-                <p>Numer domu: {{ address.houseNumber }}</p>
-                <p>Miasto: {{ address.city }}</p>
-                <hr>
-            {% endfor %}
-        {% endif %}
-    {% if user.emails is not empty %}
-        <h3>Emaile:</h3>
-        {% for email in user.emails %}
-            <hr>
-            <p>Email: {{ email.address }}</p>
-            <p>Rodzaj: {{ email.type }}</p>
-            <hr>
-        {% endfor %}
-    {% endif %}
-    {% if user.phones is not empty %}
-        <h3>Telefony:</h3>
-        {% for phone in user.phones %}
-            <hr>
-            <p>Numer: {{ phone.number }}</p>
-            <p>Rodzaj: {{ phone.type }}</p>
-            <hr>
-        {% endfor %}
-    {% endif %}
-    <a href={{ path('userEditForm', {'id':user.id}) }}>Edytuj</a>
+        <div class="row">
+            <div class="col-lg-3">
+                <h3>Dane użytkownika:</h3>
+                <p>
+                    Imię: {{ user.name }}
+                </p>
+                <p>
+                    Nazwisko: {{ user.surname }}
+                </p>
+                <p>
+                    Opis: {{ user.description }}
+                </p>
+            </div>
+            <div class="col-lg-3">
+                {% if user.adresses is not empty %}
+                    <h3>Adresy:</h3>
+                    {% for address in user.adresses %}
+                        <p>Ulica: {{ address.street }}</p>
+                        <p>Numer domu: {{ address.houseNumber }}</p>
+                        <p>Miasto: {{ address.city }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-lg-3">
+                {% if user.emails is not empty %}
+                    <h3>Emaile:</h3>
+                    {% for email in user.emails %}
+                        <p>Email: {{ email.address }}</p>
+                        <p>Rodzaj: {{ email.type }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-lg-3">
+                {% if user.phones is not empty %}
+                    <h3>Telefony:</h3>
+                    {% for phone in user.phones %}
+                        <p>Numer: {{ phone.number }}</p>
+                        <p>Rodzaj: {{ phone.type }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    <a class="btn-sm btn-primary" href={{ path('userEditForm', {'id':user.id}) }}>Edytuj</a>
     <a href={{ path('showAllUsers') }}>Powrót</a>
 {% endblock %}

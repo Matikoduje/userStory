@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var phoneForm = document.querySelector('#phoneForm');
     var btnPhone = document.querySelector('#btnPhone');
 
-
     btnAdress.addEventListener('click', function (e) {
         if (adressForm.style.display === 'none') {
             adressForm.style.display = 'block';
