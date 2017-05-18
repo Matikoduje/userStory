@@ -101,5 +101,28 @@ class Email
     {
         return $this->type;
     }
-}
 
+    /**
+     * Set user
+     *
+     * @param \UserStoryBundle\Entity\User $user
+     *
+     * @return Email
+     */
+    public function setUser(\UserStoryBundle\Entity\User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UserStoryBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+}

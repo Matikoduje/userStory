@@ -19,10 +19,14 @@ class PhoneType extends AbstractType
                 'label' => 'Numer telefonu:'
             ))
             ->add('type', ChoiceType::class, array(
-                'label' => 'Rodzaj:'
+                'label' => 'Rodzaj:',
+                'choices' => array(
+                    'Służbowy' => 'Służbowy',
+                    'Prywatny' => 'Prywatny'
+                )
             ))
             ->add('save', SubmitType::class, array(
-                'label' => 'Dodaj'
+                'label' => 'Zapisz'
             ));
     }
 

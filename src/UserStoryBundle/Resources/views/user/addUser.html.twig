@@ -1,6 +1,8 @@
 {% extends "::base.html.twig" %}
 {% form_theme formUser 'bootstrap_3_horizontal_layout.html.twig' %}
 {% form_theme formAdress 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme formEmail 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme formPhone 'bootstrap_3_horizontal_layout.html.twig' %}
 {% block title %}
     Rejestracja
 {% endblock %}
@@ -22,8 +24,35 @@
         {{ form_errors(formAdress) }}
         {% endif %}
     </div>
+    <br>
     <div>
         <button id="btnAdress" type="button">Dodaj adres</button>
+    </div>
+    <br><br>
+    <div id="emailForm" style="display: none">
+        {%  if formEmail is defined %}
+            {{ form_start(formEmail) }}
+            {{ form_widget(formEmail) }}
+            {{ form_end(formEmail) }}
+            {{ form_errors(formEmail) }}
+        {% endif %}
+    </div>
+    <br>
+    <div>
+        <button id="btnEmail" type="button">Dodaj email</button>
+    </div>
+    <br><br>
+    <div id="phoneForm" style="display: none">
+        {%  if formPhone is defined %}
+            {{ form_start(formPhone) }}
+            {{ form_widget(formPhone) }}
+            {{ form_end(formPhone) }}
+            {{ form_errors(formPhone) }}
+        {% endif %}
+    </div>
+    <br>
+    <div>
+        <button id="btnPhone" type="button">Dodaj numer telefonu</button>
     </div>
 {% endblock %}
 {% block javascripts %}
