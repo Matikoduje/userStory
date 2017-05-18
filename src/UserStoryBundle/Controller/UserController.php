@@ -7,7 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use UserStoryBundle\Entity\Adress;
 use UserStoryBundle\Entity\User;
+use UserStoryBundle\Form\AdressType;
 use UserStoryBundle\Form\UserType;
 
 
@@ -21,12 +23,12 @@ class UserController extends Controller
     public function formUserAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user, array(
+        $formUser = $this->createForm(UserType::class, $user, array(
             'action' => $this->generateUrl('userCreate')
         ));
-        $form->handleRequest($request);
+        $formUser->handleRequest($request);
         return $this->render('UserStoryBundle:user:addUser.html.twig', array(
-            'form' => $form->createView()
+            'formUser' => $formUser->createView()
         ));
     }
 
@@ -45,7 +47,9 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
-            return new Response('Dodano użytkownika');
+            return $this->redirectToRoute('showUser', array(
+                'id' => $post->getId()
+            ));
         }
         return new Response('Wprowadzono błędne dane. Proszę raz jeszcze wprowadzić użytkownika');
     }
@@ -60,12 +64,17 @@ class UserController extends Controller
         $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
         if ($repository->find($id)) {
             $user = $repository->find($id);
-            $form = $this->createForm(UserType::class, $user, array(
+            $adress = new Adress();
+            $formUser = $this->createForm(UserType::class, $user, array(
                 'action' => $this->generateUrl('userEdit' ,array('id' => $id))
             ));
-            $form->handleRequest($request);
+            $formUser->handleRequest($request);
+            $formAdress = $this->createForm(AdressType::class, $adress, array(
+                'action' => $this->generateUrl('adressEdit' ,array('id' => $id))
+            ));
             return $this->render('UserStoryBundle:user:addUser.html.twig', array(
-                'form' => $form->createView()
+                'formUser' => $formUser->createView(),
+                'formAdress' => $formAdress->createView()
             ));
         } else {
             return new Response('Nie ma użytkownika o podanym id');
@@ -89,6 +98,30 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return new Response('Zmodyfikowano użytkownika');
+        }
+        return new Response('Wprowadzono błędne dane.');
+    }
+
+    /**
+     * @Route("/{id}/modify",
+     *     name="adressEdit")
+     * @Method("POST")
+     */
+    public function adressEditAction(Request $request, $id)
+    {
+        $user = $this->getDoctrine()
+            ->getRepository('UserStoryBundle:User')
+            ->find($id);
+        $adress = new Adress();
+        $form = $this->createForm(AdressType::class, $adress);
+        $form->handleRequest($request);
+        var_dump($request->request->all());
+        if ($form->isValid()) {
+            $post = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $post->setUser($user);
+            $em->flush();
+            return new Response('Dodano adres użytkownika.');
         }
         return new Response('Wprowadzono błędne dane.');
     }
@@ -138,7 +171,7 @@ class UserController extends Controller
     public function showAllUserAction()
     {
         $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
-        $users = $repository->findAll();
+        $users = $repository->getAllOrderByName();
         return $this->render('UserStoryBundle:user:users.html.twig', array(
             'users' => $users
         ));

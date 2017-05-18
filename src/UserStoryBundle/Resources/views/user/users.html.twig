@@ -3,18 +3,12 @@
     Rejestracja
 {% endblock %}
 {% block body %}
+    <p><a href="{{ path('userForm') }}">Dodaj osobę</a> </p>
     {% for user in users %}
-        <p>
-            Id: {{ user.id }}
-        </p>
-        <p>
-            Imię: {{ user.name }}
-        </p>
-        <p>
-            Nazwisko: {{ user.surname }}
-        </p>
-        <p>
-            Opis: {{ user.description }}
+        <p><a href="{{ path('showUser', {'id': user.id}) }}">{{ user.surname }} {{ user.name }}</a>
+        <br>
+        <a href={{ path('userEditForm', {'id': user.id}) }}>Edytuj</a>
+        <a href={{ path('deleteUser', {'id': user.id}) }}>Usuń</a>
         </p>
     {% endfor %}
 {% endblock %}

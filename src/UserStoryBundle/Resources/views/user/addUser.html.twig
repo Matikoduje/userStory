@@ -1,15 +1,31 @@
 {% extends "::base.html.twig" %}
-{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme formUser 'bootstrap_3_horizontal_layout.html.twig' %}
+{#{% form_theme formAdress 'bootstrap_3_horizontal_layout.html.twig' %}#}
 {% block title %}
     Rejestracja
 {% endblock %}
 {% block body %}
     <div>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
+        {{ form_start(formUser) }}
+        {{ form_widget(formUser) }}
+        {{ form_end(formUser) }}
     </div>
     <div>
-        {{ form_errors(form) }}
+        {{ form_errors(formUser) }}
     </div>
+    <br><br>
+    {#<div id="adressForm" style="display: none">#}
+        {#{%  if formAdress is defined %}#}
+        {#{{ form_start(formAdress) }}#}
+        {#{{ form_widget(formAdress) }}#}
+        {#{{ form_end(formAdress) }}#}
+        {#{{ form_errors(formAdress) }}#}
+        {#{% endif %}#}
+    {#</div>#}
+    <div>
+        <button id="btnAdress" type="button">Dodaj adres</button>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/main.js') }}"></script>
 {% endblock %}

@@ -4,9 +4,6 @@
 {% endblock %}
 {% block body %}
         <p>
-            Id: {{ user.id }}
-        </p>
-        <p>
             Imię: {{ user.name }}
         </p>
         <p>
@@ -15,4 +12,6 @@
         <p>
             Opis: {{ user.description }}
         </p>
+    <a href={{ path('userEditForm', {'id':user.id}) }}>Edytuj</a>
+    <a href={{ path('showAllUsers') }}>Powrót</a>
 {% endblock %}
