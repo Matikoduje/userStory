@@ -48,6 +48,16 @@ class User
     private $adresses;
 
     /**
+     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Phone", mappedBy="user")
+     */
+    private $phones;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Email", mappedBy="user")
+     */
+    private $emails;
+
+    /**
      * Get id
      *
      * @return int
@@ -168,5 +178,73 @@ class User
     public function getAdresses()
     {
         return $this->adresses;
+    }
+
+    /**
+     * Add phone
+     *
+     * @param \UserStoryBundle\Entity\Phone $phone
+     *
+     * @return User
+     */
+    public function addPhone(\UserStoryBundle\Entity\Phone $phone)
+    {
+        $this->phones[] = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Remove phone
+     *
+     * @param \UserStoryBundle\Entity\Phone $phone
+     */
+    public function removePhone(\UserStoryBundle\Entity\Phone $phone)
+    {
+        $this->phones->removeElement($phone);
+    }
+
+    /**
+     * Get phones
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPhones()
+    {
+        return $this->phones;
+    }
+
+    /**
+     * Add email
+     *
+     * @param \UserStoryBundle\Entity\Email $email
+     *
+     * @return User
+     */
+    public function addEmail(\UserStoryBundle\Entity\Email $email)
+    {
+        $this->emails[] = $email;
+
+        return $this;
+    }
+
+    /**
+     * Remove email
+     *
+     * @param \UserStoryBundle\Entity\Email $email
+     */
+    public function removeEmail(\UserStoryBundle\Entity\Email $email)
+    {
+        $this->emails->removeElement($email);
+    }
+
+    /**
+     * Get emails
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmails()
+    {
+        return $this->emails;
     }
 }
