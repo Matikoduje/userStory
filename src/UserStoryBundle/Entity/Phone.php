@@ -41,10 +41,10 @@ class Phone
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UserStoryBundle\Entity\User", inversedBy="phones")
+     * @ORM\ManyToOne(targetEntity="UserStoryBundle\Entity\Person", inversedBy="phones")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private $person;
 
     /**
      * Get id
@@ -105,26 +105,26 @@ class Phone
     }
 
     /**
-     * Set user
+     * Set person
      *
-     * @param \UserStoryBundle\Entity\User $user
+     * @param \UserStoryBundle\Entity\Person $person
      *
      * @return Phone
      */
-    public function setUser(\UserStoryBundle\Entity\User $user)
+    public function setPerson(\UserStoryBundle\Entity\Person $person)
     {
-        $this->user = $user;
+        $this->person = $person;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get person
      *
-     * @return \UserStoryBundle\Entity\User
+     * @return \UserStoryBundle\Entity\Person
      */
-    public function getUser()
+    public function getPerson()
     {
-        return $this->user;
+        return $this->person;
     }
 }

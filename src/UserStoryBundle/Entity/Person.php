@@ -5,12 +5,12 @@ namespace UserStoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * User
+ * Person
  *
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="UserStoryBundle\Repository\UserRepository")
+ * @ORM\Table(name="person")
+ * @ORM\Entity(repositoryClass="UserStoryBundle\Repository\PersonRepository")
  */
-class User
+class Person
 {
     /**
      * @var int
@@ -43,17 +43,17 @@ class User
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Adress", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Adress", mappedBy="person")
      */
     private $adresses;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Phone", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Phone", mappedBy="person")
      */
     private $phones;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Email", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserStoryBundle\Entity\Email", mappedBy="person")
      */
     private $emails;
 
@@ -72,7 +72,7 @@ class User
      *
      * @param string $name
      *
-     * @return User
+     * @return Person
      */
     public function setName($name)
     {
@@ -96,7 +96,7 @@ class User
      *
      * @param string $surname
      *
-     * @return User
+     * @return Person
      */
     public function setSurname($surname)
     {
@@ -120,7 +120,7 @@ class User
      *
      * @param string $description
      *
-     * @return User
+     * @return Person
      */
     public function setDescription($description)
     {
@@ -151,7 +151,7 @@ class User
      *
      * @param \UserStoryBundle\Entity\Adress $adress
      *
-     * @return User
+     * @return Person
      */
     public function addAdress(\UserStoryBundle\Entity\Adress $adress)
     {
@@ -185,7 +185,7 @@ class User
      *
      * @param \UserStoryBundle\Entity\Phone $phone
      *
-     * @return User
+     * @return Person
      */
     public function addPhone(\UserStoryBundle\Entity\Phone $phone)
     {
@@ -219,7 +219,7 @@ class User
      *
      * @param \UserStoryBundle\Entity\Email $email
      *
-     * @return User
+     * @return Person
      */
     public function addEmail(\UserStoryBundle\Entity\Email $email)
     {

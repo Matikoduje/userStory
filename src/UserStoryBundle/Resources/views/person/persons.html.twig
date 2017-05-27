@@ -1,0 +1,14 @@
+{% extends "::base.html.twig" %}
+{% block title %}
+    Rejestracja
+{% endblock %}
+{% block body %}
+    <a class="btn btn-primary" href="{{ path('personForm') }}">Dodaj nową osobę: </a></p>
+    {% for person in persons %}
+        <p><a href="{{ path('showPerson', {'id': person.id}) }}"><span style="font-size: medium">{{ person.surname }} {{ person.name }}</span></a>
+        <br>
+        <a class="btn-sm btn-primary" href={{ path('personEditForm', {'id': person.id}) }}>Edytuj</a>
+        <a class="btn-sm btn-warning" href={{ path('deletePerson', {'id': person.id}) }}>Usuń</a>
+        </p>
+    {% endfor %}
+{% endblock %}

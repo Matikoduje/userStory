@@ -22,10 +22,10 @@ class Adress
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UserStoryBundle\Entity\User", inversedBy="adresses")
+     * @ORM\ManyToOne(targetEntity="UserStoryBundle\Entity\Person", inversedBy="adresses")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private $person;
 
     /**
      * @var string
@@ -163,26 +163,26 @@ class Adress
     }
 
     /**
-     * Set user
+     * Set person
      *
-     * @param \UserStoryBundle\Entity\User $user
+     * @param \UserStoryBundle\Entity\Person $person
      *
      * @return Adress
      */
-    public function setUser(\UserStoryBundle\Entity\User $user)
+    public function setPerson(\UserStoryBundle\Entity\Person $person)
     {
-        $this->user = $user;
+        $this->person = $person;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get person
      *
-     * @return \UserStoryBundle\Entity\User
+     * @return \UserStoryBundle\Entity\Person
      */
-    public function getUser()
+    public function getPerson()
     {
-        return $this->user;
+        return $this->person;
     }
 }

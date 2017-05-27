@@ -7,19 +7,19 @@
             <div class="col-lg-3">
                 <h3>Dane użytkownika:</h3>
                 <p>
-                    Imię: {{ user.name }}
+                    Imię: {{ person.name }}
                 </p>
                 <p>
-                    Nazwisko: {{ user.surname }}
+                    Nazwisko: {{ person.surname }}
                 </p>
                 <p>
-                    Opis: {{ user.description }}
+                    Opis: {{ person.description }}
                 </p>
             </div>
             <div class="col-lg-3">
-                {% if user.adresses is not empty %}
+                {% if person.adresses is not empty %}
                     <h3>Adresy:</h3>
-                    {% for address in user.adresses %}
+                    {% for address in person.adresses %}
                         <p>Ulica: {{ address.street }}</p>
                         <p>Numer domu: {{ address.houseNumber }}</p>
                         <p>Miasto: {{ address.city }}</p>
@@ -27,24 +27,24 @@
                 {% endif %}
             </div>
             <div class="col-lg-3">
-                {% if user.emails is not empty %}
+                {% if person.emails is not empty %}
                     <h3>Emaile:</h3>
-                    {% for email in user.emails %}
+                    {% for email in person.emails %}
                         <p>Email: {{ email.address }}</p>
                         <p>Rodzaj: {{ email.type }}</p>
                     {% endfor %}
                 {% endif %}
             </div>
             <div class="col-lg-3">
-                {% if user.phones is not empty %}
+                {% if person.phones is not empty %}
                     <h3>Telefony:</h3>
-                    {% for phone in user.phones %}
+                    {% for phone in person.phones %}
                         <p>Numer: {{ phone.number }}</p>
                         <p>Rodzaj: {{ phone.type }}</p>
                     {% endfor %}
                 {% endif %}
             </div>
         </div>
-    <a class="btn-sm btn-primary" href={{ path('userEditForm', {'id':user.id}) }}>Edytuj</a>
-    <a href={{ path('showAllUsers') }}>Powrót</a>
+    <a class="btn-sm btn-primary" href={{ path('personEditForm', {'id':person.id}) }}>Edytuj</a>
+    <a href={{ path('showAllPersons') }}>Powrót</a>
 {% endblock %}

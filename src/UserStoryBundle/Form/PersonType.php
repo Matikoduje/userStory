@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: mat
+ * Person: mat
  * Date: 13.05.17
  * Time: 12:28
  */
@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class PersonType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -39,13 +39,13 @@ class UserType extends AbstractType
 
     public function getName()
     {
-        return 'user';
+        return 'person';
     }
 
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UserStoryBundle\Entity\User'
+            'data_class' => 'UserStoryBundle\Entity\Person'
         ));
     }
 }

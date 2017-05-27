@@ -10,71 +10,71 @@ use Symfony\Component\HttpFoundation\Request;
 use UserStoryBundle\Entity\Adress;
 use UserStoryBundle\Entity\Email;
 use UserStoryBundle\Entity\Phone;
-use UserStoryBundle\Entity\User;
+use UserStoryBundle\Entity\Person;
 use UserStoryBundle\Form\AdressType;
 use UserStoryBundle\Form\EmailFormType;
 use UserStoryBundle\Form\PhoneType;
-use UserStoryBundle\Form\UserType;
+use UserStoryBundle\Form\PersonType;
 
 
-class UserController extends Controller
+class PersonController extends Controller
 {
     /**
      * @Route("/new",
-     *     name="userForm")
+     *     name="personForm")
      * @Method("GET")
      */
-    public function formUserAction(Request $request)
+    public function formPersonAction(Request $request)
     {
-        $user = new User();
-        $formUser = $this->createForm(UserType::class, $user, array(
-            'action' => $this->generateUrl('userCreate')
+        $person = new Person();
+        $formPerson = $this->createForm(PersonType::class, $person, array(
+            'action' => $this->generateUrl('personCreate')
         ));
-        $formUser->handleRequest($request);
-        return $this->render('UserStoryBundle:user:addUser.html.twig', array(
-            'formUser' => $formUser->createView()
+        $formPerson->handleRequest($request);
+        return $this->render('@UserStory/person/addPerson.html.twig', array(
+            'formPerson' => $formPerson->createView()
         ));
     }
 
     /**
      * @Route("/new",
-     *     name="userCreate")
+     *     name="personCreate")
      * @Method("POST")
      */
-    public function newUserAction(Request $request)
+    public function newPersonAction(Request $request)
     {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $person = new Person();
+        $form = $this->createForm(PersonType::class, $person);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $post = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
-            return $this->redirectToRoute('showUser', array(
+            return $this->redirectToRoute('showPerson', array(
                 'id' => $post->getId()
             ));
         }
-        return new Response('Wprowadzono błędne dane. Proszę raz jeszcze wprowadzić użytkownika');
+        return new Response('Wprowadzono błędne dane. Proszę raz jeszcze wprowadzić osobę');
     }
 
     /**
      * @Route("/{id}/modify",
-     *     name="userEditForm")
+     *     name="personEditForm")
      * @Method("GET")
      */
-    public function formUserEditAction(Request $request, $id)
+    public function formPersonEditAction(Request $request, $id)
     {
-        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
+        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:Person');
         if ($repository->find($id)) {
-            $user = $repository->find($id);
+            $person = $repository->find($id);
             $adress = new Adress();
             $email = new Email();
             $phone = new Phone();
-            $formUser = $this->createForm(UserType::class, $user, array(
-                'action' => $this->generateUrl('userEdit' ,array('id' => $id))
+            $formPerson = $this->createForm(PersonType::class, $person, array(
+                'action' => $this->generateUrl('personEdit' ,array('id' => $id))
             ));
-            $formUser->handleRequest($request);
+            $formPerson->handleRequest($request);
             $formAdress = $this->createForm(AdressType::class, $adress, array(
                 'action' => $this->generateUrl('adressAdd' ,array('id' => $id))
             ));
@@ -84,12 +84,12 @@ class UserController extends Controller
             $formPhone = $this->createForm(PhoneType::class, $phone, array(
                 'action' => $this->generateUrl('phoneAdd', array('id' => $id))
             ));
-            return $this->render('UserStoryBundle:user:addUser.html.twig', array(
-                'formUser' => $formUser->createView(),
+            return $this->render('@UserStory/person/addPerson.html.twig', array(
+                'formPerson' => $formPerson->createView(),
                 'formAdress' => $formAdress->createView(),
                 'formEmail' => $formEmail->createView(),
                 'formPhone' => $formPhone->createView(),
-                'user' => $user
+                'person' => $person
             ));
         } else {
             return new Response('Nie ma użytkownika o podanym id');
@@ -98,21 +98,21 @@ class UserController extends Controller
 
     /**
      * @Route("/{id}/modify",
-     *     name="userEdit")
+     *     name="personEdit")
      * @Method("POST")
      */
-    public function userEditAction(Request $request, $id)
+    public function personEditAction(Request $request, $id)
     {
-        $user = $this->getDoctrine()
-            ->getRepository('UserStoryBundle:User')
+        $person = $this->getDoctrine()
+            ->getRepository('UserStoryBundle:Person')
             ->find($id);
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(PersonType::class, $person);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $post = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->redirectToRoute('showUser', array(
+            return $this->redirectToRoute('showPerson', array(
                 'id' => $post->getId()
             ));
         }
@@ -126,8 +126,8 @@ class UserController extends Controller
      */
     public function emailAddAction(Request $request, $id)
     {
-        $user = $this->getDoctrine()
-            ->getRepository('UserStoryBundle:User')
+        $person = $this->getDoctrine()
+            ->getRepository('UserStoryBundle:Person')
             ->find($id);
         $email = new Email();
         $form = $this->createForm(EmailFormType::class, $email);
@@ -135,11 +135,11 @@ class UserController extends Controller
         if ($form->isValid()) {
             $post = $form->getData();
             $em = $this->getDoctrine()->getManager();
-            $post->setUser($user);
+            $post->setPerson($person);
             $em->persist($post);
             $em->flush();
-            return $this->redirectToRoute('showUser', array(
-                'id' => $post->getUser()->getId()
+            return $this->redirectToRoute('showPerson', array(
+                'id' => $post->getPerson()->getId()
             ));
         }
         return new Response('Wprowadzono błędne dane.');
@@ -152,8 +152,8 @@ class UserController extends Controller
      */
     public function phoneAddAction(Request $request, $id)
     {
-        $user = $this->getDoctrine()
-            ->getRepository('UserStoryBundle:User')
+        $person = $this->getDoctrine()
+            ->getRepository('UserStoryBundle:Person')
             ->find($id);
         $phone = new Phone();
         $form = $this->createForm(PhoneType::class, $phone);
@@ -161,11 +161,11 @@ class UserController extends Controller
         if ($form->isValid()) {
             $post = $form->getData();
             $em = $this->getDoctrine()->getManager();
-            $post->setUser($user);
+            $post->setPerson($person);
             $em->persist($post);
             $em->flush();
-            return $this->redirectToRoute('showUser', array(
-                'id' => $post->getUser()->getId()
+            return $this->redirectToRoute('showPerson', array(
+                'id' => $post->getPerson()->getId()
             ));
         }
         return new Response('Wprowadzono błędne dane.');
@@ -178,8 +178,8 @@ class UserController extends Controller
      */
     public function adressAddAction(Request $request, $id)
     {
-        $user = $this->getDoctrine()
-            ->getRepository('UserStoryBundle:User')
+        $person = $this->getDoctrine()
+            ->getRepository('UserStoryBundle:Person')
             ->find($id);
         $adress = new Adress();
         $form = $this->createForm(AdressType::class, $adress);
@@ -187,11 +187,11 @@ class UserController extends Controller
         if ($form->isValid()) {
             $post = $form->getData();
             $em = $this->getDoctrine()->getManager();
-            $post->setUser($user);
+            $post->setPerson($person);
             $em->persist($post);
             $em->flush();
-            return $this->redirectToRoute('showUser', array(
-                'id' => $post->getUser()->getId()
+            return $this->redirectToRoute('showPerson', array(
+                'id' => $post->getPerson()->getId()
             ));
         }
         return new Response('Wprowadzono błędne dane.');
@@ -199,16 +199,16 @@ class UserController extends Controller
 
     /**
      * @Route("/{id}/delete",
-     *     name="deleteUser")
+     *     name="deletePerson")
      * @Method("GET")
      */
-    public function deleteUserAction($id)
+    public function deletePersonAction($id)
     {
-        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
+        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:Person');
         if ($repository->find($id)) {
-            $user = $repository->find($id);
+            $person = $repository->find($id);
             $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
+            $em->remove($person);
             $em->flush();
             return new Response('Usunięto użytkownika o id ' . $id);
         } else {
@@ -217,30 +217,30 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/{idUser}/{idAdress}/deleteAdress",
+     * @Route("/{idPerson}/{idAdress}/deleteAdress",
      *     name="deleteAdress")
      * @Method("GET")
      */
-    public function deleteAdressAction($idUser, $idAdress)
+    public function deleteAdressAction($idPerson, $idAdress)
     {
-        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
-        if ($repository->find($idUser)) {
-            $user = $repository->find($idUser);
+        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:Person');
+        if ($repository->find($idPerson)) {
+            $person = $repository->find($idPerson);
             $repositoryAdress = $this->getDoctrine()->getRepository('UserStoryBundle:Adress');
-            $adresses = $repositoryAdress->findByUser($idUser);
+            $adresses = $repositoryAdress->findByPerson($idPerson);
             $em = $this->getDoctrine()->getManager();
             foreach ($adresses as $adress) {
                 if ($adress->getId() == $idAdress) {
                     $em->remove($adress);
-                    $user->removeAdress($adress);
+                    $person->removeAdress($adress);
                     $em->flush();
-                    return $this->redirectToRoute('userEdit', array(
-                        'id' => $user->getId()
+                    return $this->redirectToRoute('personEdit', array(
+                        'id' => $person->getId()
                     ));
                 }
             }
-            return $this->redirectToRoute('userEdit', array(
-                'id' => $user->getId()
+            return $this->redirectToRoute('personEdit', array(
+                'id' => $person->getId()
             ));
         } else {
             return new Response('Nie ma użytkownika o podanym id');
@@ -248,30 +248,30 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/{idUser}/{idEmail}/deleteEmail",
+     * @Route("/{idPerson}/{idEmail}/deleteEmail",
      *     name="deleteEmail")
      * @Method("GET")
      */
-    public function deleteEmailAction($idUser, $idEmail)
+    public function deleteEmailAction($idPerson, $idEmail)
     {
-        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
-        if ($repository->find($idUser)) {
-            $user = $repository->find($idUser);
+        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:Person');
+        if ($repository->find($idPerson)) {
+            $person = $repository->find($idPerson);
             $repositoryEmail = $this->getDoctrine()->getRepository('UserStoryBundle:Email');
-            $emails = $repositoryEmail->findByUser($idUser);
+            $emails = $repositoryEmail->findByPerson($idPerson);
             $em = $this->getDoctrine()->getManager();
             foreach ($emails as $email) {
                 if ($email->getId() == $idEmail) {
                     $em->remove($email);
-                    $user->removeEmail($email);
+                    $person->removeEmail($email);
                     $em->flush();
-                    return $this->redirectToRoute('userEdit', array(
-                        'id' => $user->getId()
+                    return $this->redirectToRoute('personEdit', array(
+                        'id' => $person->getId()
                     ));
                 }
             }
-            return $this->redirectToRoute('userEdit', array(
-                'id' => $user->getId()
+            return $this->redirectToRoute('personEdit', array(
+                'id' => $person->getId()
             ));
         } else {
             return new Response('Nie ma użytkownika o podanym id');
@@ -279,30 +279,30 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/{idUser}/{idPhone}/deletePhone",
+     * @Route("/{idPerson}/{idPhone}/deletePhone",
      *     name="deletePhone")
      * @Method("GET")
      */
-    public function deletePhoneAction($idUser, $idPhone)
+    public function deletePhoneAction($idPerson, $idPhone)
     {
-        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
-        if ($repository->find($idUser)) {
-            $user = $repository->find($idUser);
+        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:Person');
+        if ($repository->find($idPerson)) {
+            $person = $repository->find($idPerson);
             $repositoryPhone = $this->getDoctrine()->getRepository('UserStoryBundle:Phone');
-            $phones = $repositoryPhone->findByUser($idUser);
+            $phones = $repositoryPhone->findByPerson($idPerson);
             $em = $this->getDoctrine()->getManager();
             foreach ($phones as $phone) {
                 if ($phone->getId() == $idPhone) {
                     $em->remove($phone);
-                    $user->removePhone($phone);
+                    $person->removePhone($phone);
                     $em->flush();
-                    return $this->redirectToRoute('userEdit', array(
-                        'id' => $user->getId()
+                    return $this->redirectToRoute('personEdit', array(
+                        'id' => $person->getId()
                     ));
                 }
             }
-            return $this->redirectToRoute('userEdit', array(
-                'id' => $user->getId()
+            return $this->redirectToRoute('personEdit', array(
+                'id' => $person->getId()
             ));
         } else {
             return new Response('Nie ma użytkownika o podanym id');
@@ -311,16 +311,16 @@ class UserController extends Controller
 
     /**
      * @Route("/{id}",
-     *     name="showUser")
+     *     name="showPerson")
      * @Method("GET")
      */
-    public function showUserAction($id)
+    public function showPersonAction($id)
     {
-        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
+        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:Person');
         if ($repository->find($id)) {
-            $user = $repository->find($id);
-            return $this->render('UserStoryBundle:user:user.html.twig', array(
-                'user' => $user
+            $person = $repository->find($id);
+            return $this->render('@UserStory/person/person.html.twig', array(
+                'person' => $person
             ));
         } else {
             return new Response('Nie ma użytkownika o podanym id');
@@ -329,15 +329,15 @@ class UserController extends Controller
 
     /**
      * @Route("/",
-     *     name="showAllUsers")
+     *     name="showAllPersons")
      * @Method("GET")
      */
-    public function showAllUserAction()
+    public function showAllPersonAction()
     {
-        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:User');
-        $users = $repository->getAllOrderByName();
-        return $this->render('UserStoryBundle:user:users.html.twig', array(
-            'users' => $users
+        $repository = $this->getDoctrine()->getRepository('UserStoryBundle:Person');
+        $persons = $repository->getAllOrderByName();
+        return $this->render('@UserStory/person/persons.html.twig', array(
+            'persons' => $persons
         ));
     }
 
@@ -356,12 +356,12 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
-            $userId = $post->getUser()->getId();
-            return $this->redirectToRoute('userEditForm', array(
-                'id' => $userId
+            $personId = $post->getPerson()->getId();
+            return $this->redirectToRoute('personEditForm', array(
+                'id' => $personId
             ));
         }
-        return $this->render('@UserStory/user/adressEdit.html.twig', array(
+        return $this->render('@UserStory/person/adressEdit.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -380,12 +380,12 @@ class UserController extends Controller
             $post = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $userId = $post->getUser()->getId();
-            return $this->redirectToRoute('userEditForm', array(
-                'id' => $userId
+            $personId = $post->getPerson()->getId();
+            return $this->redirectToRoute('personEditForm', array(
+                'id' => $personId
             ));
         }
-        return $this->render('@UserStory/user/emailEdit.html.twig', array(
+        return $this->render('@UserStory/person/emailEdit.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -404,12 +404,12 @@ class UserController extends Controller
             $post = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $userId = $post->getUser()->getId();
-            return $this->redirectToRoute('userEditForm', array(
-                'id' => $userId
+            $personId = $post->getPerson()->getId();
+            return $this->redirectToRoute('personEditForm', array(
+                'id' => $personId
             ));
         }
-        return $this->render('@UserStory/user/phoneEdit.html.twig', array(
+        return $this->render('@UserStory/person/phoneEdit.html.twig', array(
             'form' => $form->createView()
         ));
     }
