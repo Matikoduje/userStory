@@ -29,6 +29,11 @@ class Person
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="UserStoryBundle\Entity\User", inversedBy="persons")
+     */
+    private $user;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="surname", type="string", length=30)
@@ -246,5 +251,29 @@ class Person
     public function getEmails()
     {
         return $this->emails;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \UserStoryBundle\Entity\User $user
+     *
+     * @return Person
+     */
+    public function setUser(\UserStoryBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UserStoryBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

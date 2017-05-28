@@ -10,8 +10,4 @@ namespace UserStoryBundle\Repository;
  */
 class PersonRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getAllOrderByName()
-    {
-        return $this->findBy(array(), array('surname' => 'ASC'));
-    }
 }

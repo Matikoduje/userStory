@@ -3,6 +3,7 @@
 namespace UserStoryBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,10 @@ use UserStoryBundle\Form\EmailFormType;
 use UserStoryBundle\Form\PhoneType;
 use UserStoryBundle\Form\PersonType;
 
-
+/**
+ * @Route("/person")
+ * @Security("is_granted('ROLE_USER')")
+ */
 class PersonController extends Controller
 {
     /**
@@ -49,6 +53,7 @@ class PersonController extends Controller
         if ($form->isValid()) {
             $post = $form->getData();
             $em = $this->getDoctrine()->getManager();
+            $post->setUser($this->getUser());
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('showPerson', array(
@@ -335,7 +340,7 @@ class PersonController extends Controller
     public function showAllPersonAction()
     {
         $repository = $this->getDoctrine()->getRepository('UserStoryBundle:Person');
-        $persons = $repository->getAllOrderByName();
+        $persons = $repository->findByUser($this->getUser()->getId());
         return $this->render('@UserStory/person/persons.html.twig', array(
             'persons' => $persons
         ));
